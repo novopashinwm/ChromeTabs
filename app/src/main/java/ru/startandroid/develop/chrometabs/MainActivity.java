@@ -28,14 +28,17 @@ public class MainActivity extends AppCompatActivity {
     private static final String REDIRECT_URI = "https://www.google.ru/";
     private static final String STATE_PARAM = "state";
     private static final String RESPONSE_TYPE_VALUE ="code";
-    public static String CLIENT_ID = "2bcac5550c4eea92c841";
-    public static String SECRET_KEY = "49587e6f9e4e6de51685d75631ba7b7d8e49b8ef";
+    public static String CLIENT_ID = "13fd40a2ffe82ab2bef1";
+    public static String SECRET_KEY = "df8c2cd0dd938e94fdc30d82cef4205531bc3649";
     WebView webView;
 
     private static final String QUESTION_MARK = "?";
     private static final String AMPERSAND = "&";
     private static final String EQUALS = "=";
     private static final String CLIENT_ID_PARAM = "client_id";
+    private static final String SCOPE_PARAM = "scope";
+    private static final String REPO = "repo";
+
     private static final String SECRET_KEY_PARAM = "client_secret";
 
     @Override
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         String authUrl = getAuthorizationUrl();
         Log.i("Authorize","Loading Auth Url: "+authUrl);
         //Load the authorization URL into the webView
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(authUrl);
 
     }
@@ -125,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static String getAuthorizationUrl(){
         return OAUTH_URL
-                +QUESTION_MARK+CLIENT_ID_PARAM+EQUALS+CLIENT_ID;
+                +QUESTION_MARK+CLIENT_ID_PARAM+EQUALS+CLIENT_ID
+                +AMPERSAND +SCOPE_PARAM + EQUALS + REPO ;
     }
 
 }

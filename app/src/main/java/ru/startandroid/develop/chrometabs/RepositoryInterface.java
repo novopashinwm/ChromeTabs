@@ -31,7 +31,8 @@ public interface RepositoryInterface {
     Call<GitHubUser> getUserInfo(@Header("Authorization") String token);
 
     @POST("user/repos")
-    Call<GithubRepository> createRepo(@Body GithubRepository repo, @Header("Authorization") String accessToken,
+    Call<GithubRepository> createRepo(@Body GithubRepository repo,
+                                      @Header("Authorization") String accessToken,
                                       @Header("Accept") String apiVersionSpec,
                                       @Header("Content-Type") String contentType);
 

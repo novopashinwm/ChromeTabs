@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ import ru.startandroid.develop.chrometabs.model.GithubRepository;
 import ru.startandroid.develop.chrometabs.model.Permissions;
 
 public class CreateRepoActivity extends AppCompatActivity {
+    public static final String BASE_URL = "https://api.github.com/";
     Button btnCreateRepo;
     EditText etRepoName;
     private Bundle bundle;
@@ -48,15 +50,18 @@ public class CreateRepoActivity extends AppCompatActivity {
                 repository.setPermissions(permissions);
                 //ApiUtils.createRepository(repository,token);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.github.com/") // Note that the base url is different. See documentation
+                        .baseUrl(BASE_URL) // Note that the base url is different. See documentation
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 RepositoryInterface service = retrofit.create(RepositoryInterface.class);
                 service.createRepo(repository,"token " + accessToken
                         ,"application/vnd.github.v3+json"
                 ,"application/json").enqueue(new Callback<GithubRepository>() {
+
+
                     @Override
-                    public void onResponse(Call<GithubRepository> call, Response<GithubRepository> response) {
+                    public void onResponse(@Nullable Call<GithubRepository> call, @Nullable Response<GithubRepository> response) {
+
                         if (response.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Repository create succ", Toast.LENGTH_LONG).show();
                         } else {
@@ -85,7 +90,9 @@ public class CreateRepoActivity extends AppCompatActivity {
             public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
                 if (response.isSuccessful()) {
                     gitHubUser = response.body();
-                    setTitle(gitHubUser.getLogin());
+                    if (gitHubUser.getLogin() != null) {
+                        setTitle(gitHubUser.getLogin());
+                    }
                 }
             }
 
